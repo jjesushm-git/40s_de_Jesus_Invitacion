@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Invitación Especial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffe0ec, #fff7d6);
+      text-align: center;
+      color: #333;
+    }
+
+    .portada {
+      padding: 35px 20px;
+    }
+
+    h1 {
+      font-size: 34px;
+      color: #c2185b;
+    }
+
+    .tarjeta {
+      background: white;
+      max-width: 420px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 18px rgba(0,0,0,0.2);
+    }
+
+    .fecha {
+      font-size: 22px;
+      font-weight: bold;
+      color: #6a1b9a;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #c2185b;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .juego {
+      display: none;
+      padding: 25px 10px;
+    }
+
+    .tablero {
+      display: grid;
+      grid-template-columns: repeat(4, 75px);
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .carta {
+      width: 75px;
+      height: 75px;
+      background: #6a1b9a;
+      color: white;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .carta.volteada,
+    .carta.encontrada {
+      background: #43a047;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+    }
+
+    .modal-contenido {
+      background: white;
+      width: 90%;
+      max-width: 380px;
+      padding: 25px;
+      border-radius: 18px;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    .cerrar {
+      position: absolute;
+      right: 15px;
+      top: 8px;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .final {
+      display: none;
+      background: white;
+      max-width: 420px;
+      margin: 25px auto;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 18px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="portada" id="portada">
+    <div class="tarjeta">
+      <h1>🎉 Invitación Especial 🎉</h1>
+      <p>Estás invitado a celebrar con nosotros</p>
+
+      <h2>Mi evento especial</h2>
+
+      <p class="fecha">📅 Sábado 15 de junio</p>
+      <p>🕔 5:00 PM</p>
+      <p>📍 Salón Jardín Los Pinos</p>
+
+      <p>Antes de ver todos los detalles, juega este pequeño memorama.</p>
+
+      <button onclick="mostrarJuego()">Jugar memorama 🧠</button>
+    </div>
+  </section>
+
+  <section class="juego" id="juego">
+    <h2>🧠 Encuentra los pares</h2>
+    <p>Cada par revelará una parte de la invitación.</p>
+
+    <div class="tablero" id="tablero"></div>
+
+    <button onclick="reiniciarJuego()">Reiniciar</button>
+  </section>
+
+  <section class="final" id="final">
+    <h2>🎊 Invitación desbloqueada 🎊</h2>
+    <p><strong>Te esperamos con mucho cariño.</strong></p>
+    <p>📅 Fecha: Sábado 15 de junio</p>
+    <p>🕔 Hora: 5:00 PM</p>
+    <p>📍 Lugar: Salón Jardín Los Pinos</p>
+    <p>🎁 No faltes, será un momento muy especial.</p>
+  </section>
+
+  <div class="modal" id="modal">
+    <div class="modal-contenido">
+      <span class="cerrar" onclick="cerrarModal()">×</span>
+      <h2 id="tituloModal"></h2>
+      <p id="textoModal"></p>
+    </div>
+  </div>
+
+  <script>
+    const datos = [
+      {
+        icono: "📅",
+        titulo: "Fecha",
+        texto: "El evento será el sábado 15 de junio."
+      },
+      {
+        icono: "🕔",
+        titulo: "Hora",
+        texto: "La celebración comenzará a las 5:00 PM."
+      },
+      {
+        icono: "📍",
+        titulo: "Lugar",
+        texto: "Te esperamos en el Salón Jardín Los Pinos."
+      },
+      {
+        icono: "🎂",
+        titulo: "Celebración",
+        texto: "Será una reunión llena de alegría, comida y buenos momentos."
+      },
+      {
+        icono: "🎁",
+        titulo: "Sorpresa",
+        texto: "Habrá una sorpresa especial durante el evento."
+      },
+      {
+        icono: "💌",
+        titulo: "Mensaje",
+        texto: "Tu presencia es el mejor regalo."
+      }
+    ];
+
+    let cartas = [];
+    let primeraCarta = null;
+    let segundaCarta = null;
+    let bloqueo = false;
+    let paresEncontrados = 0;
+
+    const tablero = document.getElementById("tablero");
+    const modal = document.getElementById("modal");
+    const tituloModal = document.getElementById("tituloModal");
+    const textoModal = document.getElementById("textoModal");
+    const final = document.getElementById("final");
+
+    function mostrarJuego() {
+      document.getElementById("portada").style.display = "none";
+      document.getElementById("juego").style.display = "block";
+      reiniciarJuego();
+    }
+
+    function crearCartas() {
+      cartas = [];
+      datos.forEach((item, index) => {
+        cartas.push({ ...item, id: index });
+        cartas.push({ ...item, id: index });
+      });
+      cartas.sort(() => Math.random() - 0.5);
+    }
+
+    function dibujarTablero() {
+      tablero.innerHTML = "";
+
+      cartas.forEach((carta, index) => {
+        const div = document.createElement("div");
+        div.className = "carta";
+        div.textContent = "?";
+        div.dataset.index = index;
+        div.onclick = () => voltearCarta(div, carta);
+        tablero.appendChild(div);
+      });
+    }
+
+    function voltearCarta(div, carta) {
+      if (bloqueo) return;
+      if (div.classList.contains("volteada")) return;
+      if (div.classList.contains("encontrada")) return;
+
+      div.textContent = carta.icono;
+      div.classList.add("volteada");
+
+      if (!primeraCarta) {
+        primeraCarta = { div, carta };
+        return;
+      }
+
+      segundaCarta = { div, carta };
+      bloqueo = true;
+
+      if (primeraCarta.carta.id === segundaCarta.carta.id) {
+        primeraCarta.div.classList.add("encontrada");
+        segundaCarta.div.classList.add("encontrada");
+
+        paresEncontrados++;
+        mostrarModal(carta.titulo, carta.texto);
+
+        primeraCarta = null;
+        segundaCarta = null;
+        bloqueo = false;
+
+        if (paresEncontrados === datos.length) {
+          setTimeout(() => {
+            final.style.display = "block";
+          }, 800);
+        }
+
+      } else {
+        setTimeout(() => {
+          primeraCarta.div.textContent = "?";
+          segundaCarta.div.textContent = "?";
+
+          primeraCarta.div.classList.remove("volteada");
+          segundaCarta.div.classList.remove("volteada");
+
+          primeraCarta = null;
+          segundaCarta = null;
+          bloqueo = false;
+        }, 800);
+      }
+    }
+
+    function mostrarModal(titulo, texto) {
+      tituloModal.textContent = titulo;
+      textoModal.textContent = texto;
+      modal.style.display = "flex";
+    }
+
+    function cerrarModal() {
+      modal.style.display = "none";
+    }
+
+    function reiniciarJuego() {
+      primeraCarta = null;
+      segundaCarta = null;
+      bloqueo = false;
+      paresEncontrados = 0;
+      final.style.display = "none";
+      cerrarModal();
+      crearCartas();
+      dibujarTablero();
+    }
+  </script>
+
+</body>
+</html>
