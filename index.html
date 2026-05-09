@@ -319,6 +319,30 @@
     font-size: 24px;
   }
 }
+
+.pantalla-entrar {
+  position: fixed;
+  inset: 0;
+  z-index: 2200;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-entrar {
+  background: #c2185b;
+  color: white;
+  font-size: 24px;
+  padding: 16px 34px;
+  border-radius: 40px;
+  border: none;
+  box-shadow: 0 0 20px rgba(255,255,255,0.35);
+}
+
+.btn-saltar {
+  display: none;
+}
 	
   </style>
 </head>
@@ -326,9 +350,13 @@
 <body>
 
 <section id="introVideo" class="intro-video">
-  <video id="videoInicio" autoplay muted playsinline>
+  <video id="videoInicio" playsinline preload="auto">
     <source src="intro.mp4" type="video/mp4">
   </video>
+
+  <div id="pantallaEntrar" class="pantalla-entrar">
+    <button class="btn-entrar" onclick="iniciarIntro()">Entrar</button>
+  </div>
 
   <button class="btn-saltar" onclick="terminarIntro()">Saltar</button>
 </section>
@@ -575,15 +603,29 @@
 	const introVideo = document.getElementById("introVideo");
 const videoInicio = document.getElementById("videoInicio");
 const pantallaCarta = document.getElementById("pantallaCarta");
+const pantallaEntrar = document.getElementById("pantallaEntrar");
+const btnSaltar = document.querySelector(".btn-saltar");
 
 videoInicio.addEventListener("ended", terminarIntro);
+
+function iniciarIntro() {
+  pantallaEntrar.style.display = "none";
+  btnSaltar.style.display = "block";
+
+  videoInicio.muted = false;
+  videoInicio.volume = 1;
+
+  videoInicio.play().catch(() => {
+    videoInicio.muted = true;
+    videoInicio.play();
+  });
+}
 
 function terminarIntro() {
   introVideo.classList.add("salir");
 
   setTimeout(() => {
     introVideo.style.display = "none";
-
     pantallaCarta.classList.remove("oculto");
     pantallaCarta.style.display = "flex";
     pantallaCarta.classList.add("aparecer");
