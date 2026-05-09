@@ -279,23 +279,26 @@
     }
 
     .carta {
-      width: 75px;
-      height: 75px;
-      background: #6a1b9a;
-      color: white;
-      font-size: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 14px;
-      cursor: pointer;
-      user-select: none;
-    }
+		width: 75px;
+		height: 75px;
+		background: url('reverso.png') no-repeat center;
+		background-size: cover;
+		color: white;
+		font-size: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 14px;
+		cursor: pointer;
+		user-select: none;
+	}
 
     .carta.volteada,
-    .carta.encontrada {
-      background: #43a047;
-    }
+	.carta.encontrada {
+		background: white;
+		color: #222;
+		font-size: 28px;
+	}
 
     .modal {
       display: none;
@@ -616,7 +619,7 @@ function activarPantallaCompleta() {
       cartas.forEach((carta, index) => {
         const div = document.createElement("div");
         div.className = "carta";
-        div.textContent = "?";
+        div.textContent = "";
         div.onclick = () => voltearCarta(div, carta);
         tablero.appendChild(div);
       });
@@ -657,8 +660,8 @@ function activarPantallaCompleta() {
 
       } else {
         setTimeout(() => {
-          primeraCarta.div.textContent = "?";
-          segundaCarta.div.textContent = "?";
+          primeraCarta.div.textContent = "";
+          segundaCarta.div.textContent = "";
 
           primeraCarta.div.classList.remove("volteada");
           segundaCarta.div.classList.remove("volteada");
