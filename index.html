@@ -11,20 +11,16 @@
     }
 
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      color: white;
-      text-align: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-      background:
-        radial-gradient(circle at 20% 30%, white 1px, transparent 2px),
-        radial-gradient(circle at 70% 20%, white 1px, transparent 2px),
-        radial-gradient(circle at 40% 80%, white 1px, transparent 2px),
-        radial-gradient(circle at 85% 75%, white 1px, transparent 2px),
-        radial-gradient(circle at 50% 50%, #1a1a2e, #000000 70%);
-      background-size: 180px 180px, 220px 220px, 260px 260px, 300px 300px, cover;
-    }
+  margin: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  background: url('fondo.jpg') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
 
     .constelacion {
       position: fixed;
@@ -47,15 +43,13 @@
     }
 
     .sobre {
-      width: 90%;
-      max-width: 520px;
-      height: 320px;
-      background: #d9b98f;
-      border-radius: 8px;
-      position: relative;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-      border: 2px solid #b58f5a;
-    }
+  width: 90%;
+  max-width: 380px;
+  height: 240px;
+  background: url('sobre.png') no-repeat center;
+  background-size: contain;
+  position: relative;
+}
 
     .sobre:before {
       content: "";
@@ -68,25 +62,16 @@
     }
 
     .sello {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 115px;
-      height: 115px;
-      border-radius: 50%;
-      background: #8b1020;
-      color: #ffd98a;
-      border: 6px solid #5c0711;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 2;
-      box-shadow: 0 8px 15px rgba(0,0,0,0.45);
-    }
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 90px;
+  background: url('sello.png') no-repeat center;
+  background-size: contain;
+  cursor: pointer;
+}
 
     .sello:hover {
       transform: translate(-50%, -50%) scale(1.06);
@@ -237,6 +222,48 @@
     #volumenMusica {
       width: 90px;
     }
+	
+	@media (max-width: 480px) {
+
+  .sobre {
+    max-width: 300px;
+    height: 200px;
+  }
+
+  .sello {
+    width: 70px;
+    height: 70px;
+  }
+
+  .hoja {
+    padding: 20px 15px;
+  }
+
+  .hoja h1 {
+    font-size: 26px;
+  }
+
+  .hoja p {
+    font-size: 16px;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 10px 18px;
+  }
+
+  .tablero {
+    grid-template-columns: repeat(4, 65px);
+    gap: 8px;
+  }
+
+  .carta {
+    width: 65px;
+    height: 65px;
+    font-size: 24px;
+  }
+}
+	
   </style>
 </head>
 
@@ -282,7 +309,7 @@
     <div class="hoja">
       <h2>🎊 Invitación desbloqueada 🎊</h2>
       <p><strong>Te esperamos con mucho cariño.</strong></p>
-      <p>📅 Fecha: Sábado 15 de junio</p>
+      <p>📅 Fecha: Sábado 06 de junio</p>
       <p>🕔 Hora: 5:00 PM</p>
       <p>📍 Lugar: Salón Jardín Los Pinos</p>
       <p>🎁 No faltes, será un momento muy especial.</p>
