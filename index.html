@@ -120,10 +120,12 @@
     .sobre {
   width: 90%;
   max-width: 380px;
-  height: 240px;
+  aspect-ratio: 3 / 2;
   background: url('sobre.png') no-repeat center;
   background-size: contain;
-  position: relative;
+
+  position: relative; /* IMPORTANTE */
+  margin: auto;
 }
 
     .sobre:before {
@@ -138,16 +140,27 @@
 
     .sello {
   position: absolute;
-  bottom: 30px;
+
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+
+  transform: translate(-50%, -50%);
+
   width: 90px;
   height: 90px;
+
   background: url('sello.png') no-repeat center;
   background-size: contain;
+
   cursor: pointer;
+
+  /* evita que se deforme o mueva */
+  display: block;
 }
 
+.sello:active {
+  transform: translate(-50%, -50%) scale(0.92);
+}
     .sello:hover {
       transform: translate(-50%, -50%) scale(1.06);
     }
@@ -383,14 +396,14 @@
   </div>
 </section>
 
-  <div class="constelacion c1">✦ · ✧ · ✦</div>
-  <div class="constelacion c2">✧ · ✦ · ✧</div>
-  <div class="constelacion c3">✦ · ✦ · ✧</div>
-  <div class="constelacion c4">✧ · ✧ · ✦</div>
+  <div class="constelacion c1"></div>
+  <div class="constelacion c2"></div>
+  <div class="constelacion c3"></div>
+  <div class="constelacion c4"></div>
 
   <section class="pantalla-carta oculto" id="pantallaCarta">
     <div class="sobre">
-      <div class="sello" onclick="abrirCarta()">Abrir</div>
+      <div class="sello" onclick="abrirCarta()"></div>
       <div class="texto-abrir">Haz clic en el sello para abrir tu invitación</div>
     </div>
   </section>
