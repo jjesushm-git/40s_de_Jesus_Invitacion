@@ -6,6 +6,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+  
+	.intro-video {
+  position: fixed;
+  inset: 0;
+  background: black;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 1.2s ease;
+}
+
+.intro-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.intro-video.salir {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.btn-saltar {
+  position: fixed;
+  bottom: 25px;
+  right: 20px;
+  z-index: 2100;
+  background: rgba(255,255,255,0.85);
+  color: #111;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 18px;
+  font-size: 15px;
+}
+
+.oculto {
+  display: none !important;
+}
+
+.pantalla-carta.aparecer {
+  animation: aparecerCarta 1s ease forwards;
+}
+
+@keyframes aparecerCarta {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+	
     * {
       box-sizing: border-box;
     }
@@ -269,12 +325,20 @@
 
 <body>
 
+<section id="introVideo" class="intro-video">
+  <video id="videoInicio" autoplay muted playsinline>
+    <source src="intro.mp4" type="video/mp4">
+  </video>
+
+  <button class="btn-saltar" onclick="terminarIntro()">Saltar</button>
+</section>
+
   <div class="constelacion c1">✦ · ✧ · ✦</div>
   <div class="constelacion c2">✧ · ✦ · ✧</div>
   <div class="constelacion c3">✦ · ✦ · ✧</div>
   <div class="constelacion c4">✧ · ✧ · ✦</div>
 
-  <section class="pantalla-carta" id="pantallaCarta">
+  <section class="pantalla-carta oculto" id="pantallaCarta">
     <div class="sobre">
       <div class="sello" onclick="abrirCarta()">Abrir</div>
       <div class="texto-abrir">Haz clic en el sello para abrir tu invitación</div>
@@ -507,6 +571,25 @@
 
     crearCartas();
     dibujarTablero();
+	
+	const introVideo = document.getElementById("introVideo");
+const videoInicio = document.getElementById("videoInicio");
+const pantallaCarta = document.getElementById("pantallaCarta");
+
+videoInicio.addEventListener("ended", terminarIntro);
+
+function terminarIntro() {
+  introVideo.classList.add("salir");
+
+  setTimeout(() => {
+    introVideo.style.display = "none";
+
+    pantallaCarta.classList.remove("oculto");
+    pantallaCarta.style.display = "flex";
+    pantallaCarta.classList.add("aparecer");
+  }, 1200);
+}
+	
   </script>
 
 </body>
