@@ -28,9 +28,12 @@
 }
 
 .modal-video video {
+  display: block;
   width: 100%;
   height: auto;
+  min-height: 240px;
   max-height: 75vh;
+  object-fit: contain;
   border-radius: 14px;
   background: black;
 }
@@ -367,9 +370,10 @@
 
 <section id="introVideo" class="intro-video">
   <div class="modal-video">
-    <video id="videoInicio" playsinline preload="auto" controls>
-      <source src="intro.mp4" type="video/mp4">
-    </video>
+    <video id="videoInicio" playsinline webkit-playsinline preload="auto" controls>
+  <source src="intro.mp4" type="video/mp4">
+  Tu navegador no puede reproducir este video.
+</video>
 
     <button class="btn-saltar" onclick="terminarIntro()">Saltar</button>
   </div>
