@@ -14,6 +14,13 @@
 
   <style>
   
+  .img-carta {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+  pointer-events: none;
+}
+  
   html, body {
   margin: 0;
   padding: 0;
@@ -466,16 +473,16 @@
       <button onclick="mostrarJuego()">Jugar 🧠</button>
 
       <p class="cita">
-        “No dejamos de jugar por hacernos viejos,<br>
-        nos hacemos viejos porque dejamos de jugar.”
+        “No dejamos de jugar por nos hemos hecho viejos, <br>
+        nos hemos hecho viejos porque dejamos de jugar”
       </p>
     </div>
   </section>
 
   <section class="juego" id="juego">
     <div class="hoja">
-      <h2>🧠 Encuentra los pares</h2>
-      <p>Cada par revelará una parte de la invitación.</p>
+      <h2>🧠 Juega y encuentra el PAR</h2>
+      <p>Cada par revelará un mensaje importante</p>
       <div class="tablero" id="tablero"></div>
       <button onclick="reiniciarJuego()">Reiniciar</button>
     </div>
@@ -483,12 +490,12 @@
 
   <section class="final" id="final">
     <div class="hoja">
-      <h2>🎊 Invitación desbloqueada 🎊</h2>
-      <p><strong>Te esperamos con mucho cariño.</strong></p>
+      <h2> Invitación desbloqueada </h2>
+      <p><strong>Te esperamos para celebrar los 40s de Jesus</strong></p>
       <p>📅 Fecha: Sábado 06 de junio</p>
-      <p>🕔 Hora: 5:00 PM</p>
-      <p>📍 Lugar: Salón Jardín Los Pinos</p>
-      <p>🎁 No faltes, será un momento muy especial.</p>
+      <p>🕔 Hora: 4:30 PM</p>
+      <p>📍 Lugar: Te espero en Happy Land Gran Plaza https://maps.app.goo.gl/hYJ2LRsU4Qyj2Dsh7</p>
+      <p>🎁 No faltes, te esperan 4 horas de diversion sin igual</p>
     </div>
   </section>
 
@@ -509,12 +516,12 @@
 
   <script>
     const datos = [
-      { icono: "📅", titulo: "Fecha", texto: "El evento será el sábado 15 de junio." },
-      { icono: "🕔", titulo: "Hora", texto: "La celebración comenzará a las 5:00 PM." },
-      { icono: "📍", titulo: "Lugar", texto: "Te esperamos en el Salón Jardín Los Pinos." },
-      { icono: "🎂", titulo: "Celebración", texto: "Será una reunión llena de alegría, comida y buenos momentos." },
-      { icono: "🎁", titulo: "Sorpresa", texto: "Habrá una sorpresa especial durante el evento." },
-      { icono: "💌", titulo: "Mensaje", texto: "Tu presencia es el mejor regalo." }
+      { imagen: "fecha.png", titulo: "Fecha", texto: "Esto acontesera el sábado 06 de junio" },
+      { imagen: "hora.png", titulo: "Hora", texto: "La diversion dara inicio en punto de las 4:30 PM" },
+      { imagen: "lugar.png", titulo: "Lugar", texto: "Te espero en Happy Land Gran Plaza" },
+      { imagen: "pastel.png", titulo: "Celebración", texto: "Listo para pasar 4 horas de diversion" },
+      { imagen: "regalo.png", titulo: "Sorpresa", texto: "Recuerda has sido seleccinado para vivir esta experiencia sin igual" },
+      { imagen: "mensaje.png", titulo: "Mensaje", texto: "Recuerda no dejamos de jugar por nos Hemos hecho viejos, nos hemos hecho viejos porque dejamos de jugar" }
     ];
 
     let cartas = [];
@@ -630,7 +637,7 @@ function activarPantallaCompleta() {
       if (div.classList.contains("volteada")) return;
       if (div.classList.contains("encontrada")) return;
 
-      div.textContent = carta.icono;
+      div.innerHTML = `<img src="${carta.imagen}" class="img-carta">`;
       div.classList.add("volteada");
 
       if (!primeraCarta) {
@@ -660,8 +667,8 @@ function activarPantallaCompleta() {
 
       } else {
         setTimeout(() => {
-          primeraCarta.div.textContent = "";
-          segundaCarta.div.textContent = "";
+          primeraCarta.div.innerHTML = "";
+          segundaCarta.div.innerHTML = "";
 
           primeraCarta.div.classList.remove("volteada");
           segundaCarta.div.classList.remove("volteada");
