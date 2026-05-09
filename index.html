@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
   <meta charset="UTF-8">
   <title>Invitación</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+  
+  html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  touch-action: manipulation;
+}
   
 .intro-video {
   position: fixed;
@@ -494,11 +509,26 @@
     actualizarBotonMute();
 
     function abrirCarta() {
-      document.getElementById("pantallaCarta").style.display = "none";
-      document.getElementById("portada").style.display = "block";
-      controlesMusica.style.display = "flex";
-      iniciarMusica();
-    }
+
+  activarPantallaCompleta(); // 👈 esto es clave
+
+  document.getElementById("pantallaCarta").style.display = "none";
+  document.getElementById("portada").style.display = "block";
+
+  iniciarMusica();
+}
+
+function activarPantallaCompleta() {
+  const elem = document.documentElement;
+
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
+}
 
     function iniciarMusica() {
       musica.muted = musicaMuteada;
