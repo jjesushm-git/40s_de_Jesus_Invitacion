@@ -522,6 +522,24 @@ Happy Land Gran Plaza
     </div>
   </div>
 
+<div class="modal" id="modalFinal">
+  <div class="modal-contenido">
+    <span class="cerrar" onclick="cerrarModalFinal()">×</span>
+
+    <h2>Invitación desbloqueada</h2>
+    <p><strong>Te esperamos para celebrar los 40s de Jesus</strong></p>
+    <p>🗓️ Fecha: Sábado 06 de junio</p>
+    <p>🕟 Hora: 4:30 PM</p>
+    <p>
+      📍 Lugar:
+      <a href="https://maps.app.goo.gl/hYJ2LRsU4Qyj2Dsh7" target="_blank">
+        Happy Land Gran Plaza
+      </a>
+    </p>
+    <p>🎁 No faltes, te esperan 4 horas de diversión sin igual</p>
+  </div>
+</div>
+
   <div id="controlesMusica">
     <button id="btnMute" onclick="toggleMute()">🔊</button>
     <input id="volumenMusica" type="range" min="0" max="1" step="0.01" value="0.7">
@@ -539,11 +557,13 @@ Happy Land Gran Plaza
       { imagen: "mensaje.png", titulo: "Codigo", texto: "Recuerda no dejamos de jugar por nos Hemos hecho viejos, nos hemos hecho viejos porque dejamos de jugar" }
     ];
 
-    let cartas = [];
-    let primeraCarta = null;
-    let segundaCarta = null;
-    let bloqueo = false;
-    let paresEncontrados = 0;
+
+	let cartas = [];
+	let primeraCarta = null;
+	let segundaCarta = null;
+	let bloqueo = false;
+	let paresEncontrados = 0;
+	let mostrarFinalPendiente = false;
 
     const tablero = document.getElementById("tablero");
     const modal = document.getElementById("modal");
@@ -674,11 +694,9 @@ function activarPantallaCompleta() {
         segundaCarta = null;
         bloqueo = false;
 
-        if (paresEncontrados === datos.length) {
-  setTimeout(() => {
-    mostrarModalFinal();
-  }, 800);
-}
+       if (paresEncontrados === datos.length) {
+		mostrarFinalPendiente = true;
+		}
       } else {
         setTimeout(() => {
           primeraCarta.div.innerHTML = "";
@@ -701,14 +719,20 @@ function activarPantallaCompleta() {
     }
 
     function cerrarModal() {
-      modal.style.display = "none";
-    }
+  modal.style.display = "none";
+
+  if (mostrarFinalPendiente) {
+    mostrarFinalPendiente = false;
+    mostrarModalFinal();
+  }
+}
 
     function reiniciarJuego() {
       primeraCarta = null;
       segundaCarta = null;
       bloqueo = false;
       paresEncontrados = 0;
+	  mostrarFinalPendiente = false;
       final.style.display = "none";
       cerrarModal();
       crearCartas();
@@ -749,6 +773,14 @@ function terminarIntro() {
   pantallaCarta.classList.remove("oculto");
   pantallaCarta.style.display = "flex";
   pantallaCarta.classList.add("aparecer");
+}
+	
+	function mostrarModalFinal() {
+  document.getElementById("modalFinal").style.display = "flex";
+}
+
+function cerrarModalFinal() {
+  document.getElementById("modalFinal").style.display = "none";
 }
 	
 	function mostrarModalFinal() {
