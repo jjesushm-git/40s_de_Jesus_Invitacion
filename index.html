@@ -449,7 +449,8 @@ a:hover {
   position: fixed;
   width: 58px;
   height: 58px;
-  z-index: 2300;
+  z-index: 99999;
+  pointer-events: auto;
   cursor: pointer;
   filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.95));
   animation: brilloEstrella 0.8s infinite alternate;
@@ -659,6 +660,11 @@ a:hover {
 
 #modalPassword {
   z-index: 6200;
+}
+
+/* La estrella queda por encima de todas las pantallas, videos, modales y carrito */
+#estrellaDorada {
+  z-index: 99999 !important;
 }
 
 
