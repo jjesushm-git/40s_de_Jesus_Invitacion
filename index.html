@@ -567,10 +567,99 @@ a:hover {
   75% { transform: translateX(-5px); }
 }
 
+
+/* ===== BOTÓN PERSISTENTE DE CARRITO / REGALO ===== */
+.btn-carrito-regalo {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6000;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 2px solid #FFD700;
+  background: radial-gradient(circle, #ffffff 0%, #ffe68a 45%, #d69b00 100%);
+  color: #111;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  box-shadow:
+    0 0 10px rgba(255,215,0,0.85),
+    0 0 22px rgba(255,215,0,0.55);
+  animation: brilloCarrito 1s infinite alternate;
+  touch-action: manipulation;
+}
+
+.btn-carrito-regalo:active {
+  transform: translateX(-50%) scale(0.92);
+}
+
+@keyframes brilloCarrito {
+  from { box-shadow: 0 0 8px rgba(255,215,0,0.65), 0 0 18px rgba(255,215,0,0.35); }
+  to { box-shadow: 0 0 14px rgba(255,215,0,1), 0 0 30px rgba(255,215,0,0.75); }
+}
+
+.modal-regalo {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  align-items: center;
+  justify-content: center;
+  z-index: 6100;
+}
+
+.regalo-contenido {
+  background: white;
+  color: #222;
+  width: 90%;
+  max-width: 390px;
+  padding: 28px 22px;
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 0 0 25px rgba(255,215,0,0.55);
+  border: 2px solid #FFD700;
+  text-align: center;
+}
+
+.regalo-contenido p {
+  font-size: 18px;
+  line-height: 1.45;
+  margin: 14px 0;
+}
+
+.link-regalo {
+  display: inline-block;
+  color: #1976d2;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.emoji-regalo-grande {
+  font-size: 76px;
+  line-height: 1;
+  margin-top: 12px;
+}
+
+.link-emoji-regalo {
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
   </style>
 </head>
 
 <body>
+
+<button id="btnCarritoRegalo" class="btn-carrito-regalo" onclick="abrirModalRegalo()" aria-label="Ver sugerencia de regalo">🛒</button>
+
 
 <section id="introVideo" class="intro-video">
   <div class="modal-video">
@@ -692,6 +781,23 @@ Happy Land Gran Plaza
     <button id="btnMute" onclick="toggleMute()">🔊</button>
     <input id="volumenMusica" type="range" min="0" max="1" step="0.01" value="0.7">
   </div>
+
+
+
+<div class="modal-regalo" id="modalRegalo">
+  <div class="regalo-contenido">
+    <span class="cerrar" onclick="cerrarModalRegalo()">×</span>
+
+    <p>
+      El mejor regalo es tu compañía pero si gustas darme un obsequio y no sabes qué
+      <a class="link-regalo" href="https://www.amazon.com.mx/hz/wishlist/ls/2BT51U38QI1FX?ref_=wl_share" target="_blank" rel="noopener">
+        DA CLIC AQUI
+      </a>
+    </p>
+
+    <a class="emoji-regalo-grande link-emoji-regalo" href="https://www.amazon.com.mx/hz/wishlist/ls/2BT51U38QI1FX?ref_=wl_share" target="_blank" rel="noopener" aria-label="Abrir lista de regalos">🎁</a>
+  </div>
+</div>
 
   <audio id="musicaFondo" src="musica.mp3" loop preload="auto"></audio>
 
@@ -909,6 +1015,8 @@ let movimientoEstrella = null;
 
 videoInicio.addEventListener("ended", terminarIntro);
 
+mostrarEstrellaDorada();
+
 function iniciarIntro() {
   activarPantallaCompleta();
 
@@ -952,7 +1060,7 @@ function regresarAPantallaEntrar() {
   document.getElementById("final").style.display = "none";
   document.getElementById("pantallaCarta").style.display = "none";
 
-  detenerEstrellaDorada();
+  mostrarEstrellaDorada();
 
   modalVideo.style.display = "none";
   pantallaEntrar.style.display = "flex";
@@ -1074,6 +1182,15 @@ function validarPassword() {
     borrarPassword();
     crearTecladoPassword();
   }, 650);
+}
+
+
+function abrirModalRegalo() {
+  document.getElementById("modalRegalo").style.display = "flex";
+}
+
+function cerrarModalRegalo() {
+  document.getElementById("modalRegalo").style.display = "none";
 }
 
 	
