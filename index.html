@@ -650,6 +650,15 @@ a:hover {
   display: inline-block;
   text-decoration: none;
   cursor: pointer;
+  transition: transform 0.18s ease;
+}
+
+.link-emoji-regalo:active {
+  transform: scale(0.92);
+}
+
+#modalPassword {
+  z-index: 6200;
 }
 
 
@@ -789,13 +798,13 @@ Happy Land Gran Plaza
     <span class="cerrar" onclick="cerrarModalRegalo()">×</span>
 
     <p>
-      El mejor regalo es tu compañía pero si gustas darme un obsequio y no sabes qué
+      El mejor regalo es tu compañía pero si gustas darme un obsequio y no sabes que
       <a class="link-regalo" href="https://www.amazon.com.mx/hz/wishlist/ls/2BT51U38QI1FX?ref_=wl_share" target="_blank" rel="noopener">
         DA CLIC AQUI
       </a>
     </p>
 
-    <a class="emoji-regalo-grande link-emoji-regalo" href="https://www.amazon.com.mx/hz/wishlist/ls/2BT51U38QI1FX?ref_=wl_share" target="_blank" rel="noopener" aria-label="Abrir lista de regalos">🎁</a>
+    <a class="emoji-regalo-grande link-emoji-regalo" href="https://www.amazon.com.mx/hz/wishlist/ls/2BT51U38QI1FX?ref_=wl_share" target="_blank" rel="noopener" aria-label="Abrir lista de regalos en Amazon">🎁</a>
   </div>
 </div>
 
@@ -1015,8 +1024,6 @@ let movimientoEstrella = null;
 
 videoInicio.addEventListener("ended", terminarIntro);
 
-mostrarEstrellaDorada();
-
 function iniciarIntro() {
   activarPantallaCompleta();
 
@@ -1060,11 +1067,10 @@ function regresarAPantallaEntrar() {
   document.getElementById("final").style.display = "none";
   document.getElementById("pantallaCarta").style.display = "none";
 
-  mostrarEstrellaDorada();
-
   modalVideo.style.display = "none";
   pantallaEntrar.style.display = "flex";
   introVideo.style.display = "flex";
+  mostrarEstrellaDorada();
 }
 
 function mostrarEstrellaDorada() {
@@ -1192,6 +1198,9 @@ function abrirModalRegalo() {
 function cerrarModalRegalo() {
   document.getElementById("modalRegalo").style.display = "none";
 }
+
+// La estrella aparece desde la primera pantalla y sigue cambiando de lugar.
+mostrarEstrellaDorada();
 
 	
   </script>
