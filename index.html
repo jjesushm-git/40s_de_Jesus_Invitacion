@@ -442,6 +442,131 @@ a:hover {
   display: none;
 }
 	
+  
+/* ===== ESTRELLA DORADA Y PASSWORD SECRETO ===== */
+.estrella-dorada {
+  display: none;
+  position: fixed;
+  width: 58px;
+  height: 58px;
+  z-index: 2300;
+  cursor: pointer;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.95));
+  animation: brilloEstrella 0.8s infinite alternate;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.estrella-dorada::before {
+  content: "★";
+  color: #FFD700;
+  font-size: 58px;
+  line-height: 58px;
+  text-shadow:
+    0 0 5px #fff4a3,
+    0 0 12px #ffd700,
+    0 0 22px rgba(255, 190, 0, 0.9);
+}
+
+@keyframes brilloEstrella {
+  from { transform: scale(0.9) rotate(-8deg); }
+  to { transform: scale(1.12) rotate(8deg); }
+}
+
+.password-contenido {
+  background: #111;
+  color: white;
+  width: 92%;
+  max-width: 360px;
+  padding: 24px 18px;
+  border-radius: 20px;
+  position: relative;
+  box-shadow:
+    0 0 18px rgba(255,215,0,0.65),
+    inset 0 0 18px rgba(255,215,0,0.12);
+  border: 2px solid #FFD700;
+}
+
+.password-contenido h2 {
+  margin: 10px 0 18px;
+  color: #FFD700;
+  font-size: 24px;
+}
+
+#passwordDisplay {
+  width: 170px;
+  height: 48px;
+  text-align: center;
+  font-size: 28px;
+  letter-spacing: 8px;
+  border-radius: 12px;
+  border: 2px solid #FFD700;
+  background: white;
+  color: #111;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.teclado-password {
+  display: grid;
+  grid-template-columns: repeat(3, 70px);
+  gap: 10px;
+  justify-content: center;
+  margin: 8px auto 14px;
+}
+
+.tecla-numero,
+.tecla-borrar {
+  height: 58px;
+  border-radius: 14px;
+  border: none;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(145deg, #333, #111);
+  color: #FFD700;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow:
+    0 0 8px rgba(255,215,0,0.35),
+    inset 0 0 8px rgba(255,255,255,0.08);
+}
+
+.tecla-numero:active,
+.tecla-borrar:active {
+  transform: scale(0.92);
+}
+
+.tecla-vacia {
+  width: 70px;
+  height: 58px;
+}
+
+.texto-password {
+  font-size: 13px;
+  color: #ddd;
+  margin: 8px 12px 0;
+  line-height: 1.35;
+}
+
+.error-password {
+  color: #ff6b6b;
+  min-height: 18px;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.password-contenido.error {
+  animation: sacudir 0.28s;
+}
+
+@keyframes sacudir {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-5px); }
+}
+
   </style>
 </head>
 
@@ -466,6 +591,8 @@ a:hover {
   <div class="constelacion c2"></div>
   <div class="constelacion c3"></div>
   <div class="constelacion c4"></div>
+
+  <div id="estrellaDorada" class="estrella-dorada" onclick="tocarEstrella()" aria-label="Estrella dorada"></div>
 
   <section class="pantalla-carta oculto" id="pantallaCarta">
     <div class="sobre">
@@ -537,6 +664,27 @@ Happy Land Gran Plaza
       </a>
     </p>
     <p>🎁 No faltes, te esperan 4 horas de diversión sin igual</p>
+  </div>
+</div>
+
+
+<div class="modal" id="modalPassword">
+  <div class="password-contenido" id="passwordContenido">
+    <span class="cerrar" onclick="cerrarPassword()">×</span>
+
+    <h2>Introduce el PASSWORD</h2>
+
+    <input id="passwordDisplay" type="text" readonly inputmode="none" autocomplete="off" maxlength="4">
+
+    <div id="tecladoPassword" class="teclado-password"></div>
+
+    <button class="tecla-borrar" onclick="borrarPassword()">Borrar</button>
+
+    <p class="texto-password">
+      El password es el año de nacimiento del cumpleañero
+    </p>
+
+    <div id="errorPassword" class="error-password"></div>
   </div>
 </div>
 
@@ -748,6 +896,17 @@ const pantallaCarta = document.getElementById("pantallaCarta");
 const pantallaEntrar = document.getElementById("pantallaEntrar");
 const modalVideo = document.querySelector(".modal-video");
 
+const estrellaDorada = document.getElementById("estrellaDorada");
+const modalPassword = document.getElementById("modalPassword");
+const tecladoPassword = document.getElementById("tecladoPassword");
+const passwordDisplay = document.getElementById("passwordDisplay");
+const passwordContenido = document.getElementById("passwordContenido");
+const errorPassword = document.getElementById("errorPassword");
+
+let passwordIngresado = "";
+let movimientoEstrella = null;
+
+
 videoInicio.addEventListener("ended", terminarIntro);
 
 function iniciarIntro() {
@@ -773,43 +932,152 @@ function terminarIntro() {
   pantallaCarta.classList.remove("oculto");
   pantallaCarta.style.display = "flex";
   pantallaCarta.classList.add("aparecer");
+
+  mostrarEstrellaDorada();
 }
 	
-	function mostrarModalFinal() {
+	
+function mostrarModalFinal() {
   document.getElementById("modalFinal").style.display = "flex";
 }
 
 function cerrarModalFinal() {
   document.getElementById("modalFinal").style.display = "none";
-}
-	
-	function mostrarModalFinal() {
-  document.getElementById("modalFinal").style.display = "flex";
+  regresarAPantallaEntrar();
 }
 
-function cerrarModalFinal() {
-  document.getElementById("modalFinal").style.display = "none";
+function regresarAPantallaEntrar() {
+  document.getElementById("portada").style.display = "none";
+  document.getElementById("juego").style.display = "none";
+  document.getElementById("final").style.display = "none";
+  document.getElementById("pantallaCarta").style.display = "none";
+
+  detenerEstrellaDorada();
+
+  modalVideo.style.display = "none";
+  pantallaEntrar.style.display = "flex";
+  introVideo.style.display = "flex";
 }
+
+function mostrarEstrellaDorada() {
+  if (!estrellaDorada) return;
+
+  estrellaDorada.style.display = "block";
+  moverEstrellaDorada();
+
+  clearInterval(movimientoEstrella);
+  movimientoEstrella = setInterval(moverEstrellaDorada, 500);
+}
+
+function detenerEstrellaDorada() {
+  clearInterval(movimientoEstrella);
+  movimientoEstrella = null;
+
+  if (estrellaDorada) {
+    estrellaDorada.style.display = "none";
+  }
+}
+
+function moverEstrellaDorada() {
+  const margen = 70;
+  const ancho = window.innerWidth - margen;
+  const alto = window.innerHeight - margen;
+
+  const x = Math.floor(Math.random() * Math.max(ancho, margen));
+  const y = Math.floor(Math.random() * Math.max(alto, margen));
+
+  estrellaDorada.style.left = x + "px";
+  estrellaDorada.style.top = y + "px";
+}
+
+function tocarEstrella() {
+  activarPantallaCompleta();
+  abrirPassword();
+}
+
+function abrirPassword() {
+  passwordIngresado = "";
+  passwordDisplay.value = "";
+  errorPassword.textContent = "";
+  passwordContenido.classList.remove("error");
+
+  crearTecladoPassword();
+  modalPassword.style.display = "flex";
+}
+
+function cerrarPassword() {
+  modalPassword.style.display = "none";
+}
+
+function crearTecladoPassword() {
+  tecladoPassword.innerHTML = "";
+
+  const numeros = ["1","2","3","4","5","6","7","8","9","0"];
+  numeros.sort(() => Math.random() - 0.5);
+
+  const primerosNueve = numeros.slice(0, 9);
+  const ultimoNumero = numeros[9];
+
+  primerosNueve.forEach(numero => {
+    tecladoPassword.appendChild(crearBotonNumero(numero));
+  });
+
+  const vacioIzquierda = document.createElement("div");
+  vacioIzquierda.className = "tecla-vacia";
+  tecladoPassword.appendChild(vacioIzquierda);
+
+  tecladoPassword.appendChild(crearBotonNumero(ultimoNumero));
+
+  const vacioDerecha = document.createElement("div");
+  vacioDerecha.className = "tecla-vacia";
+  tecladoPassword.appendChild(vacioDerecha);
+}
+
+function crearBotonNumero(numero) {
+  const boton = document.createElement("button");
+  boton.className = "tecla-numero";
+  boton.type = "button";
+  boton.textContent = numero;
+  boton.onclick = () => escribirPassword(numero);
+  return boton;
+}
+
+function escribirPassword(numero) {
+  if (passwordIngresado.length >= 4) return;
+
+  passwordIngresado += numero;
+  passwordDisplay.value = passwordIngresado;
+
+  if (passwordIngresado.length === 4) {
+    validarPassword();
+  }
+}
+
+function borrarPassword() {
+  passwordIngresado = "";
+  passwordDisplay.value = "";
+  errorPassword.textContent = "";
+}
+
+function validarPassword() {
+  if (passwordIngresado === "1986") {
+    cerrarPassword();
+    mostrarModalFinal();
+    return;
+  }
+
+  errorPassword.textContent = "Password incorrecto";
+  passwordContenido.classList.add("error");
+
+  setTimeout(() => {
+    passwordContenido.classList.remove("error");
+    borrarPassword();
+    crearTecladoPassword();
+  }, 650);
+}
+
 	
   </script>
-
-<div class="modal" id="modalFinal">
-  <div class="modal-contenido">
-    <span class="cerrar" onclick="cerrarModalFinal()">×</span>
-
-    <h2>Invitación desbloqueada</h2>
-    <p><strong>Te esperamos para celebrar los 40s de Jesús</strong></p>
-    <p>🗓️ Fecha: Sábado 06 de junio</p>
-    <p>🕟 Hora: 4:30 PM</p>
-    <p>
-      📍 Lugar:
-      <a href="https://maps.app.goo.gl/hYJ2LRsU4Qyj2Dsh7" target="_blank">
-        Happy Land Gran Plaza
-      </a>
-    </p>
-    <p>🎁 No faltes, te esperan 4 horas de diversión sin igual</p>
-  </div>
-</div>
 
 </body>
 </html>
