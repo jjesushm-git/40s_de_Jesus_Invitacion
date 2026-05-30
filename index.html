@@ -470,6 +470,21 @@ a:hover {
     0 0 22px rgba(255, 190, 0, 0.9);
 }
 
+
+.estrella-dorada::after {
+  content: attr(data-toques);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -46%);
+  color: #111;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: bold;
+  text-shadow: 0 0 4px rgba(255,255,255,0.9);
+  pointer-events: none;
+}
+
 @keyframes brilloEstrella {
   from { transform: scale(0.9) rotate(-8deg); }
   to { transform: scale(1.12) rotate(8deg); }
@@ -659,7 +674,11 @@ a:hover {
 }
 
 #modalPassword {
-  z-index: 6200;
+  z-index: 100000;
+}
+
+#modalFinal {
+  z-index: 100001;
 }
 
 /* La estrella queda por encima de todas las pantallas, videos, modales y carrito */
@@ -1026,6 +1045,8 @@ const errorPassword = document.getElementById("errorPassword");
 
 let passwordIngresado = "";
 let movimientoEstrella = null;
+let toquesEstrella = 0;
+let estrellaDesbloqueada = false;
 
 
 videoInicio.addEventListener("ended", terminarIntro);
@@ -1080,13 +1101,13 @@ function regresarAPantallaEntrar() {
 }
 
 function mostrarEstrellaDorada() {
-  if (!estrellaDorada) return;
+  if (!estrellaDorada || estrellaDesbloqueada) return;
 
   estrellaDorada.style.display = "block";
   moverEstrellaDorada();
 
   clearInterval(movimientoEstrella);
-  movimientoEstrella = setInterval(moverEstrellaDorada, 500);
+  movimientoEstrella = setInterval(moverEstrellaDorada, 1000);
 }
 
 function detenerEstrellaDorada() {
@@ -1111,8 +1132,19 @@ function moverEstrellaDorada() {
 }
 
 function tocarEstrella() {
+  if (estrellaDesbloqueada) return;
+
   activarPantallaCompleta();
-  abrirPassword();
+
+  if (toquesEstrella >= 3) {
+    estrellaDesbloqueada = true;
+    detenerEstrellaDorada();
+    abrirPassword();
+    return;
+  }
+
+  toquesEstrella++;
+  estrellaDorada.setAttribute("data-toques", String(toquesEstrella));
 }
 
 function abrirPassword() {
